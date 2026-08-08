@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/soytolaa/reactjs-devops.git'
+                git 'https://github.com/keoKAY/reactjs-devop8-template.git'
             }
         }
         stage('Running npm') {
