@@ -18,6 +18,9 @@ pipeline {
                     node -v
                     npm -v
                     ls -lrt
+                    npm install
+                    npm run build
+                    npm run test
                 """
             }
         }

@@ -10,3 +10,5 @@
 .profile
 .wget-hsts
 .gitconfig
+
+5.Sonarqube/.env
