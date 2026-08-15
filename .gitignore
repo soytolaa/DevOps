@@ -12,3 +12,4 @@
 .gitconfig
 
 5.Sonarqube/.env
+.dotnet/corefx/cryptography/crls
