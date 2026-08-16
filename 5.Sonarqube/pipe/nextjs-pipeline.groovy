@@ -6,7 +6,8 @@ pipeline {
     }
 
     environment {
-        TELEGRAM_CHAT_ID = "1764348762"
+        TELEGRAM_TOKEN = credentials('TELEGRAM_TOKEN')
+        TELEGRAM_CHAT_ID = credentials('TELEGRAM_CHAT_ID')
     }
 
     stages {
@@ -69,21 +70,27 @@ pipeline {
         success {
             sendTelegram(
                 "SUCCESS",
-                "Jenkins build and SonarQube Quality Gate passed."
+                "Jenkins build and SonarQube Quality Gate passed.",
+                env.TELEGRAM_TOKEN,
+                env.TELEGRAM_CHAT_ID
             )
         }
 
         failure {
             sendTelegram(
                 "FAILED",
-                "Jenkins build or SonarQube Quality Gate failed."
+                "Jenkins build or SonarQube Quality Gate failed.",
+                env.TELEGRAM_TOKEN,
+                env.TELEGRAM_CHAT_ID
             )
         }
 
         aborted {
             sendTelegram(
                 "ABORTED",
-                "Jenkins build was aborted."
+                "Jenkins build was aborted.",
+                env.TELEGRAM_TOKEN,
+                env.TELEGRAM_CHAT_ID
             )
         }
     }
@@ -94,10 +101,7 @@ pipeline {
 // Telegram Function
 // ==============================
 
-def sendTelegram(String status, String message) {
-
-    def CHAT_ID="1764348762"
-      def  TOKEN="8838380796:AAEdZ6PSIeipaoqdfkiuslH1f6vJ1BL4igk"
+def sendTelegram(String status, String message,String token,String chatId) {
 
     def text = """
 🚀 Jenkins Notification
@@ -113,8 +117,8 @@ URL: ${env.BUILD_URL}
 
     sh """
         curl -s -X POST \
-        "https://api.telegram.org/bot${TOKEN}/sendMessage" \
-        -d chat_id="${CHAT_ID}" \
+        "https://api.telegram.org/bot${token}/sendMessage" \
+        -d chat_id="${chatId}" \
         --data-urlencode text='${text}'
     """
 }
