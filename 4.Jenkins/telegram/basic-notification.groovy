@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        CHAT_ID="1764348762"
-        TOKEN="8838380796:AAEdZ6PSIeipaoqdfkiuslH1f6vJ1BL4igk"
+        TELEGRAM_TOKEN = credentials('TELEGRAM_TOKEN')
+        TELEGRAM_CHAT_ID = credentials('TELEGRAM_CHAT_ID')
     }
 
     stages {
@@ -17,8 +17,8 @@ pipeline {
                 
                                  sh """
                     curl -s -X POST \
-                      "https://api.telegram.org/bot\${TOKEN}/sendMessage" \
-                      --data-urlencode "chat_id=\${CHAT_ID}" \
+                      "https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage" \
+                      --data-urlencode "chat_id=\${TELEGRAM_CHAT_ID}" \
                       --data-urlencode "parse_mode=Markdown" \
                       --data-urlencode "text=${msg}"
                 """

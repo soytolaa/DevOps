@@ -13,3 +13,4 @@
 
 5.Sonarqube/.env
 .dotnet/corefx/cryptography/crls
+.ansible
