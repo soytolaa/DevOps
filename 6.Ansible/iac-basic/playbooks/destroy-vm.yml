@@ -1,0 +1,34 @@
+- name: Delete GCP Instance
+  hosts: localhost
+  become: true
+  vars_files:
+    - ../vars/machine.yml
+  tasks:
+    - name: Delete GCP instance
+      google.cloud.gcp_compute_instance:
+        name: "{{machine_name}}"
+        machine_type: "e2-medium"
+        zone: "us-central1-a"
+        project: "{{google_project_id}}"
+        auth_kind: application
+        state: absent
+        disks:
+          - auto_delete: true
+            boot: true
+            initialize_params:
+              source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts"
+              disk_size_gb: 15
+              disk_type: "pd-standard"
+        network_interfaces:
+          - network:
+              selfLink: "projects/{{google_project_id}}/global/networks/default"
+            access_configs:
+              - name: External NAT
+                type: ONE_TO_ONE_NAT
+        tags:
+          items:
+            - http-server
+            - https-server
+      environment:
+        GOOGLE_APPLICATION_CREDENTIALS: "{{ adc_path }}"
+        GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES: "1"

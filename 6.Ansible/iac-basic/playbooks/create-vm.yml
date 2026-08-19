@@ -2,10 +2,10 @@
   hosts: localhost
   become: true 
   vars_files:
-    - ../vars/machine.yaml 
+    - ../vars/machine.yml 
   tasks: 
   - name: Slurp the local public key
-    slurp: 
+    slurp:
       src: "{{ ssh_public_key }}" 
     register: ssh_pub_key
   - name: Install Python packages via apt

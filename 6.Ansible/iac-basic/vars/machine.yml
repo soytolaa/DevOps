@@ -2,4 +2,4 @@ google_project_id: project-7e0bd3d9-9bc4-41e4-af8
 user: ts 
 adc_path: "/home/ts/.config/gcloud/application_default_credentials.json"
 ssh_public_key: /home/ts/.ssh/id_ed25519.pub
-machine_name: demo-iac-machine
+machine_name: ts-iac-machine
