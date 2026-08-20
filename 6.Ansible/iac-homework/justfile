@@ -1,0 +1,10 @@
+#!/bin/bash
+
+create-master: 
+    ansible-playbook playbooks/create-vm-master.yml
+
+create-worker: 
+    ansible-playbook playbooks/create-vm-worker.yml
+
+destroy-all: 
+    ansible-playbook playbooks/destroy-all.yml

@@ -1,0 +1,79 @@
+- name: Create GCP Instance 
+  hosts: localhost
+  become: true 
+  vars_files:
+    - ../vars/machine.yml 
+
+  tasks: 
+  - name: Slurp the local public key
+    slurp:
+      src: "{{ ssh_public_key }}" 
+    register: ssh_pub_key
+
+  - name: Install Python packages via apt
+    apt:
+      name:
+        - python3-requests
+        - python3-google-auth
+      state: present
+      update_cache: yes
+
+  - name: Create GCP Workers instance
+    google.cloud.gcp_compute_instance:
+      name: "{{ item.name }}"
+      machine_type: "{{ item.machine_type }}"
+      zone: "{{ item.zone }}"
+      project: "{{ google_project_id }}"
+      auth_kind: application
+      state: present # create machine 
+      metadata:
+        ssh-keys: "ts:{{ ssh_pub_key['content'] | b64decode }}"
+        startup-script: |
+          #!/bin/bash 
+          sudo apt-get update && sudo apt-get upgrade -y 
+          sudo apt-get install fish -y
+      disks:
+        - auto_delete: true
+          boot: true
+          initialize_params:
+            disk_size_gb: "{{ item.disk_size }}"
+            disk_type: "{{ item.disk_type }}"
+            source_image: "projects/debian-cloud/global/images/family/{{ image }}"
+      network_interfaces:
+        - network:
+            selfLink: "projects/{{google_project_id}}/global/networks/default"
+          access_configs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+      tags:
+        items:
+          - http-server
+          - https-server
+
+    register: gcp_instance_worker
+    when: true 
+    environment: 
+        GOOGLE_APPLICATION_CREDENTIALS: "{{ adc_path }}"
+        GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES: "1"
+    loop: "{{ instances.workers }}"
+
+    # use for debug
+  - name: Write gcp_instance into json file
+    copy:
+      content: "{{ gcp_instance_worker }}"
+      dest: "./gcp_instance_worker.json"
+    when: true 
+    
+  - name: Slurp existing inventory.ini
+    slurp:
+      src: "../inventory.ini"
+    register: inventory_raw
+
+  - name: Decode inventory content
+    set_fact:
+      inventory_content: "{{ inventory_raw.content | b64decode }}"
+
+  - name: Create Workers Inventory using jinja
+    template:
+      src: ../templates/worker-template.j2
+      dest: ../inventory.ini

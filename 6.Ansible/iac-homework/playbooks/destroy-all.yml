@@ -1,0 +1,27 @@
+- name: Delete Masters and Workers on GCP
+  hosts: localhost
+  vars_files:
+    - ../vars/machine.yml
+
+  tasks:
+    - name: Delete master instances
+      google.cloud.gcp_compute_instance:
+        name: "{{ item.name }}"
+        zone: "{{ item.zone }}"
+        project: "{{ google_project_id }}"
+        auth_kind: application
+        state: absent
+      loop: "{{ instances.masters }}"
+
+    - name: Delete worker instances
+      google.cloud.gcp_compute_instance:
+        name: "{{ item.name }}"
+        zone: "{{ item.zone }}"
+        project: "{{ google_project_id }}"
+        auth_kind: application
+        state: absent
+      loop: "{{ instances.workers }}"
+
+      environment:
+        GOOGLE_APPLICATION_CREDENTIALS: "{{ adc_path }}"
+        GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES: "1"
