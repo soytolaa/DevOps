@@ -2,29 +2,52 @@ google_project_id: project-7e0bd3d9-9bc4-41e4-af8
 user: ts 
 adc_path: "/home/ts/.config/gcloud/application_default_credentials.json"
 ssh_public_key: /home/ts/.ssh/id_ed25519.pub
-image: debian-11
 
-instances:
+machine_specs:
+  large:
+    machine_type: e2-standard-2
+    zone: asia-east1-c
+    disk_size: 50
+    disk_type: pd-standard
+  medium:
+    machine_type: e2-medium
+    zone: asia-southeast2-a
+    disk_size: 40
+    disk_type: pd-standard
+
+ubuntu_specs:
+  v24:
+    image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64"
+
+machine_info:
   masters:
-    - name: ts-master1
-      machine_type: e2-standard-2
-      zone: asia-southeast1-c
-      disk_size: 50
-      disk_type: pd-standard
-    - name: ts-master2
-      machine_type: e2-standard-2
-      zone: asia-southeast1-c
-      disk_size: 50
-      disk_type: pd-standard
+    - name: "ts-master02"
+      image: "{{ ubuntu_specs.v24.image }}"
+      machine_type: "{{ machine_specs.large.machine_type }}"
+      zone: "{{ machine_specs.large.zone }}"
+      disk_size: "{{ machine_specs.large.disk_size }}"
+      disk_type: "{{ machine_specs.large.disk_type }}"
+      static_ip: "ts-master02-ip"
+    - name: ts-master03
+      image: "{{ ubuntu_specs.v24.image }}"
+      machine_type: "{{ machine_specs.large.machine_type }}"
+      zone: "{{ machine_specs.large.zone }}"
+      disk_size: "{{ machine_specs.large.disk_size }}"
+      disk_type: "{{ machine_specs.large.disk_type }}"
+      static_ip: "ts-master03-ip"
 
   workers:
-    - name: ts-worker1
-      machine_type: e2-medium
-      zone: asia-southeast2-a
-      disk_size: 40
-      disk_type: pd-standard
-    - name: ts-worker2
-      machine_type: e2-medium
-      zone: asia-southeast2-a
-      disk_size: 40
-      disk_type: pd-standard
+    - name: ts-worker01
+      image: "{{ ubuntu_specs.v24.image }}"
+      machine_type: "{{ machine_specs.large.machine_type }}"
+      zone: "{{ machine_specs.medium.zone }}"
+      disk_size: "{{ machine_specs.large.disk_size }}"
+      disk_type: "{{ machine_specs.large.disk_type }}"
+      static_ip: "ts-worker01-ip"
+    - name: ts-worker02
+      image: "{{ ubuntu_specs.v24.image }}"
+      machine_type: "{{ machine_specs.large.machine_type }}"
+      zone: "{{ machine_specs.medium.zone }}"
+      disk_size: "{{ machine_specs.large.disk_size }}"
+      disk_type: "{{ machine_specs.large.disk_type }}"
+      static_ip: "ts-worker02-ip"
