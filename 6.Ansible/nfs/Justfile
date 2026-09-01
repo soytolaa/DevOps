@@ -1,0 +1,7 @@
+#!/bin/bash
+
+setup-nfs-server :
+    ansible-playbook playbooks/nfs_server.yaml
+
+setup-nfs-client :
+    ansible-playbook playbooks/nfs_client.yaml

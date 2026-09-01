@@ -1,0 +1,31 @@
+- name: NFS Client playbook
+  hosts: nfs-clients
+  become: true
+  tasks:
+    - name: Install Nfs client
+      apt: 
+        name: nfs-common 
+        state: present 
+    - name: Create the directory for mounting 
+      file: 
+        path: "{{ nfs_client.mount_path}}"
+        state: directory 
+        owner: "nobody"
+        group: "nogroup"
+        mode: "0777"
+    # mount from server :/srv/nfs_shared /mnt/nfs_shared
+    - name: Mount the client path to server path 
+      mount: 
+        src: "{{nfs_server.ip}}:{{nfs_server.mount_path}}"
+        path: "{{nfs_client.mount_path}}"
+        fstype: nfs 
+        opts: defaults,_netdev
+        state: mounted
+    # /etc/fstab
+    - name: Persist the mount ( after restart still recognize the server )
+      mount: 
+        src: "{{nfs_server.ip}}:{{nfs_server.mount_path}}"
+        path: "{{nfs_client.mount_path}}"
+        fstype: nfs 
+        opts: defaults,_netdev
+        state: present
