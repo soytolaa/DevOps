@@ -1,0 +1,12 @@
+---
+- name: Test Ansible Vault
+  hosts: node1
+  become: true
+
+  vars_files:
+    - ../group_vars/secrets.yaml
+
+  tasks:
+    - name: Show vault variable
+      ansible.builtin.debug:
+        msg: "Secret username = {{ db.username }} password {{db.password}}"

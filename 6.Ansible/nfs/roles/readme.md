@@ -1,6 +1,6 @@
 ```bash
-roles
-    common
+roles # naming convening 
+    common 
         tasks # required
             /main.yaml
     nginx
