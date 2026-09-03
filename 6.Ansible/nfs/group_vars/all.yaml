@@ -1,0 +1,9 @@
+---
+nfs_server:
+  export_path: /srv/nfs_shared
+
+nfs_client:
+  mount_path: /mnt/nfs_shared
+
+nfs:
+  mount_options: defaults,_netdev

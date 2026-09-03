@@ -1,0 +1,7 @@
+- name: Task 1 Processing
+  ansible.builtin.import_tasks: task.yaml
+- name: Task 2 Processing
+  ansible.builtin.import_tasks: task2.yaml
+
+    
+  

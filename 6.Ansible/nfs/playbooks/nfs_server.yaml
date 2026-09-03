@@ -1,31 +1,5 @@
 - name: NFS Server playbook
   hosts: nfs-servers
   become: true
-  tasks:
-    - name: Install nfs server package 
-      apt: 
-        name: nfs-kernel-server 
-        state: present 
-    - name: Create Directory 
-      file: 
-        path: "{{nfs_server.mount_path}}"
-        state: directory
-        group: "nogroup"
-        owner: "nobody"
-        mode: "0777"
-
-    # configure to determine who allow to connect to the nfs server 
-    - name: configure etc/exports directory
-      lineinfile:
-        path: /etc/exports 
-        line: "{{nfs_server.mount_path}} {{item}}(rw,sync,no_subtree_check,no_root_squash)"
-        create: yes 
-        state: present 
-      loop: "{{nfs_client.ips}}"
-    - name: Apply the export configuration 
-      command: exportfs -ra 
-    - name: Restart nfs server 
-      systemd: 
-        name: nfs-kernel-server 
-        state: restarted 
-        enabled: true 
+  roles: 
+    - nfs_server # folder name in roles

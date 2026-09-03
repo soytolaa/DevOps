@@ -1,0 +1,3 @@
+- name: Task2
+  ansible.builtin.debug:
+    msg: "This is task2"

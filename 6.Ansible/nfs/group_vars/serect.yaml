@@ -1,0 +1,4 @@
+---
+nfs_secret:
+  test_password: "hello-vault"
+  test_token: "abc123"

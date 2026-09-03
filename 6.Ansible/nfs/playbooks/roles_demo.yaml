@@ -1,0 +1,8 @@
+- name: Testing roles
+  hosts: node1
+  become: true
+  roles:
+    # folderName in roles
+    - common
+    - nginx
+  
