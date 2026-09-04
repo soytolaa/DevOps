@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replica
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      key: demo-replica
+  template:
+    metadata:
+      labels:
+        key: demo-replica
+    spec:
+      containers:
+        - name: nignx-cont
+          image: nginx:alpine

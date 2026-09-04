@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dpl-app
+  template:
+    metadata:
+      labels:
+        app: dpl-app
+    spec:
+      containers:
+      - name: nginx-cont
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
