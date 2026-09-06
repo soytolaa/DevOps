@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-dpl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-app
+
+  template:
+    metadata:
+      labels:
+        app: spring-app
+
+    spec:
+      nodeName: ts-master01
+
+      containers:
+        - name: spring-cont
+          image: megamind007/file-upload:v.1.1.1
+          ports:
+            - containerPort: 8080
+
+          volumeMounts:
+            - name: spring-image-vol
+              mountPath: /app/uploads
+
+      volumes:
+        - name: spring-image-vol
+          hostPath:
+            path: /srv/nfs_shared
+            type: Directory
