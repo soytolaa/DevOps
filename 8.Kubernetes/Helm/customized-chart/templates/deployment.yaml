@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName.app }}-dpl
+spec:
+  replicas: {{ .Values.replicas }}
+  {{- include "selector-template" . }}
+    spec:
+      {{- if .Values.affinity }}
+      affinity: 
+      {{- toYaml .Values.affinity | nindent 7}}
+      {{- end }}
+      containers:
+      {{- with .Values.container }}
+      - name: {{ .name }}
+        image: {{ .image }}
+        {{- if .env }}
+        env: 
+        {{- range .env }}
+          - name: {{ .name }} 
+            value: {{ .value }}
+        {{- end }}
+        {{- end }}
+        {{- if .volumeMounts }}
+        volumeMounts: 
+          {{- toYaml .volumeMounts | nindent 9 }}
+        {{- end }}
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: {{ .port }}
+      {{- end }}
+    volumes: 
+      {{- toYaml  .Values.container.volumes | nindent 6}}
