@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dpl
+spec:
+  strategy:
+    type: RollingUpdate # it default 
+    rollingUpdate:
+      maxSurge: 1 # 25% extra pod that will create during update
+      maxUnavailable: 1 # 25% pod that can be unavailable during update
+  replicas: 10
+  selector:
+    matchLabels:
+      app: nginx-svc
+  template:
+    metadata:
+      labels:
+        app: nginx-svc
+    spec:
+      containers:
+      - name: nginx-dpl
+        image: nginx:latest
+        ports:
+        - containerPort: 80
