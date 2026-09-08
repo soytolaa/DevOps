@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx-dpl
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: nginx-svc
+
+  template:
+    metadata:
+      labels:
+        app: nginx-svc
+
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+
+      containers:
+        - name: nginx-cont
+          image: nginx:latest
+          ports:
+            - containerPort: 80

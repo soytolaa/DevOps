@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx-dpl
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: nginx-svc
+
+  template:
+    metadata:
+      labels:
+        app: nginx-svc
+    
+    # select specific node to handle workload
+    spec:
+      nodeName: ts-master02
+      
+      containers:
+        - name: nginx-cont
+          image: nginx:latest
+          ports:
+            - containerPort: 80
