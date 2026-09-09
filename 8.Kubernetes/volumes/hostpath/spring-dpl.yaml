@@ -11,7 +11,7 @@ spec:
       labels:
         app: spring-app
     spec:
-      # nodeName: ts-master01
+      nodeName: ts-master01
       containers:
       - name: spring-cont
         image: megamind007/file-upload:v.1.1.1
