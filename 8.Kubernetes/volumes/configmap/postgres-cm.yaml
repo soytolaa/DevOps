@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-cofigmap
+data:
+  POSTGRES_PASSWORD: pass123
+  POSTGRES_USER: postgres
