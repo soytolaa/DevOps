@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: spring-pv
+spec:
+  capacity:
+    storage: 10G
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-sharing
+  # mountOptions:
+  #   - hard
+  #   - nfsvers=4.1
+  nfs:
+    path: /srv/nfs_shared/spring-upload
+    server: 10.140.0.3
