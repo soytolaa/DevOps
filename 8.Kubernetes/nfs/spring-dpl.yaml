@@ -14,7 +14,7 @@ spec:
         app: spring-app
 
     spec:
-      nodeName: ts-master01
+      nodeName: ts-master01 # selected nfs server to can access /srv/nfs_shared
 
       containers:
         - name: spring-cont
@@ -29,5 +29,5 @@ spec:
       volumes:
         - name: spring-image-vol
           hostPath:
-            path: /srv/nfs_shared
-            type: Directory
+            path: /srv/nfs_shared/spring-upload
+            # type: Directory
