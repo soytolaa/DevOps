@@ -1,0 +1,6 @@
+# main.yaml
+- name: Configure NFS server
+  ansible.builtin.import_playbook: nfs_server.yaml
+
+- name: Configure NFS clients
+  ansible.builtin.import_playbook: nfs_client.yaml
