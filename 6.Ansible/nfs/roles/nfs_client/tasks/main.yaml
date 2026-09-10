@@ -11,7 +11,7 @@
     state: directory
     owner: nobody
     group: nogroup
-    mode: "7777"
+    mode: "0777"
 
 - name: Mount NFS share
   ansible.posix.mount:
